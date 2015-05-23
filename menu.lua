@@ -28,7 +28,7 @@ function button_click(x,y)
 					page = 3
 					love.keyboard.setTextInput(true)
 				elseif v.action == "refresh" then
-					wallet_refresh()
+tim = 2000
 				elseif v.action == "economicon" then
 					page = 4
 				elseif v.action == "domain" then

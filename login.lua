@@ -26,6 +26,8 @@ function wallet_transactions()
     channel = love.thread.getChannel("transactions")
 	value = channel:pop()
 	if value ~= nil then
+transactions = {}
+yg = 50
 		body = value
 		repeat
 			amount = string.sub(body,23+(31*graphics),31+(31*graphics))
@@ -42,6 +44,7 @@ function wallet_domains()
 	channel = love.thread.getChannel("names")
 	value = channel:pop()
 	if value ~= nil then
+names = {}
 		yn = 0
 		namelist = value
 		repeat
