@@ -19,16 +19,19 @@ function wallet_balance()
 	value = channel:pop()
 	if value ~= nil then
 		balance = value
+		value = nil
 	end
 end
 
 function wallet_transactions()
+	value = nil
     channel = love.thread.getChannel("transactions")
 	value = channel:pop()
 	if value ~= nil then
-transactions = {}
-yg = 50
+		transactions = {}
+		yg = 50
 		body = value
+		graphics = 0
 		repeat
 			amount = string.sub(body,23+(31*graphics),31+(31*graphics))
 			date = string.sub(body,1+(31*graphics),12+(31*graphics))
@@ -37,6 +40,7 @@ yg = 50
 			graphics = graphics + 1
 			yg = yg + 30
 		until graphics > 20
+		value = nil
 	end
 end
 
@@ -44,7 +48,7 @@ function wallet_domains()
 	channel = love.thread.getChannel("names")
 	value = channel:pop()
 	if value ~= nil then
-names = {}
+		names = {}
 		yn = 0
 		namelist = value
 		repeat

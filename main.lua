@@ -75,7 +75,7 @@ function love.keypressed(key)
 	elseif key == "backspace" then
 		input = ""
 	elseif key == "escape" then
-		
+		love.event.quit()
 	end
 end
 

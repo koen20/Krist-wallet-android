@@ -20,11 +20,13 @@ while true do
 			url = syncNode .. '?listtx=' .. address
 			body,c,l,h = http.request(url)
 			channel:supply(body)
+			body = nil
 		elseif action == "names" then
 			channel = love.thread.getChannel("names")
 			url = "http://ceriat.net/krist/?listnames=k4thktbi0c"
 			body,c,l,h = http.request(url)
 			channel:supply(body)
+			body = nil
 		end
 	end
 end
