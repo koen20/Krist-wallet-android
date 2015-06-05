@@ -23,7 +23,7 @@ while true do
 			body = nil
 		elseif action == "names" then
 			channel = love.thread.getChannel("names")
-			url = "http://ceriat.net/krist/?listnames=k4thktbi0c"
+			url = "http://ceriat.net/krist/?listnames= .. address"
 			body,c,l,h = http.request(url)
 			channel:supply(body)
 			body = nil
