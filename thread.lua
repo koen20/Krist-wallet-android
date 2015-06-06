@@ -25,6 +25,9 @@ while true do
 			channel = love.thread.getChannel("names")
 			url = "http://ceriat.net/krist/?listnames= .. address"
 			body,c,l,h = http.request(url)
+			if body == "Error4" then
+				body = 0
+			end
 			channel:supply(body)
 			body = nil
 		end
