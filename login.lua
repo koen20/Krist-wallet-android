@@ -45,9 +45,10 @@ function wallet_transactions()
 end
 
 function wallet_domains()
+	value = nil
 	channel = love.thread.getChannel("names")
 	value = channel:pop()
-	if value ~= nil and value ~= 0 then
+	if value ~= nil and value ~= "" then
 		names = {}
 		yn = 0
 		namelist = value

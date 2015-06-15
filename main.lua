@@ -98,8 +98,15 @@ function love.draw()
 	elseif page == 2 then --transactions
 		love.graphics.print("Showing last 20 transactions for "..address,200,1)
 		for i,v in ipairs(transactions) do
-			love.graphics.print(v.date.." "..v.thing.." "..v.amount,xg,v.y)
+			v.amount = tonumber(v.amount)
+			if v.amount > 0 then
+				love.graphics.setColor(0, 255, 0)
+			elseif v.amount < -1 then
+				love.graphics.setColor(255, 0, 0)
+			end
+			love.graphics.print(v.date.." "..v.thing.."     "..v.amount,xg,v.y)
 		end
+		love.graphics.setColor(255, 255, 255)
 	elseif page == 3 then -- transfer
 		love.graphics.print("Please enter the recipient.",200,1)
 		love.graphics.print(input,200,50)
