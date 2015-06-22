@@ -1,9 +1,41 @@
 require "login"
 require "menu"
-
 http = require "socket.http"
+socket = require "socket"
 
 function love.load()
+	--id
+	file = love.filesystem.newFile("id")
+	if not love.filesystem.exists("id") then
+		math.randomseed( os.time() )
+		id = math.random(1,1000000)
+		file:open("w")
+		file:write(id)
+		file:close()
+	end
+	file:open("r")
+	id = file:read()
+	file:close()
+	print(id)
+
+	--network
+	address, port = "love2d.koenhabets.tk", 8091
+	udp = socket.udp()
+	udp:settimeout(0.4)
+	udp:setpeername(address, port)
+
+	local dg = string.format("%f", id)
+	local snd = udp:send(dg)
+	data, msg = udp:receive()
+		if data then
+			syncNode = tostring(data)
+			print("Received syncNode: " .. syncNode)
+			
+		else
+			print("Can't connect to server")
+			syncNode = 'http://ceriat.net/krist/'
+		end
+
 	love.keyboard.setTextInput(true)
 	transactions = {}
 	top = {}
@@ -15,7 +47,7 @@ function love.load()
 	namelist = ""
 	masterkey = ""
 	address = ""
-	syncNode = 'http://ceriat.net/krist/'
+	
 	page = 0
 	graphics = 0
 	xg = 200
@@ -42,10 +74,11 @@ function love.load()
 	button_spawn(1,200,"Domains", "domain")
 	button_spawn(1,250, "Refresh", "refresh")
 	thread = love.thread.newThread("thread.lua")
-	
-
 end
 
+function p(text,x,y)
+	love.graphics.print(text,x,y)
+end
 function love.update(dt)
 	timer = timer + dt
 	if page ~= 0 then
@@ -89,14 +122,14 @@ function love.draw()
 	end
 	love.graphics.setFont(medium)
 	if page == 0 then--login
-		love.graphics.print("please login using your password",1,1)
+		p("please login using your password",1,1)
 		love.graphics.print(input,1,30)
 	elseif page == 1 then -- overview
-		love.graphics.print("Balance: " .. balance .. "kst",200,1)
-		love.graphics.print("Address: " .. address,200,50)
+		p("Balance: " .. balance .. "kst",200,1)
+		p("Address: " .. address,200,50)
 
 	elseif page == 2 then --transactions
-		love.graphics.print("Showing last 20 transactions for "..address,200,1)
+		p("Showing last 20 transactions for "..address,200,1)
 		for i,v in ipairs(transactions) do
 			v.amount = tonumber(v.amount)
 			if v.amount > 0 then
@@ -104,22 +137,26 @@ function love.draw()
 			elseif v.amount < -1 then
 				love.graphics.setColor(255, 0, 0)
 			end
-			love.graphics.print(v.date.." "..v.thing.."     "..v.amount,xg,v.y)
+			p(v.date.." "..v.thing.."     "..v.amount,xg,v.y)
 		end
 		love.graphics.setColor(255, 255, 255)
 	elseif page == 3 then -- transfer
-		love.graphics.print("Please enter the recipient.",200,1)
-		love.graphics.print(input,200,50)
+		p("Please enter the recipient.",200,1)
+		p(input,200,50)
 	elseif page == 3.1 then
-		love.graphics.print("Please enter the amount to send.",200,1)
-		love.graphics.print(input,200,50)
+		p("Please enter the amount to send.",200,1)
+		p(input,200,50)
 	elseif page == 4 then
 		for i,v in ipairs(top) do
-			love.graphics.print(v.tx.."   "..v.date.." "..v.peer.." "..v.amount,xg,v.y)
+			if v.peer == address then
+				love.graphics.setColor(0, 255, 0)
+			end
+			p(v.tx.."   "..v.date.." "..v.peer.." "..v.amount,xg,v.y)
+			love.graphics.setColor(255, 255, 255)
 		end
 	elseif page == 5 then
 		for i,v in ipairs(names) do
-			love.graphics.print(v.name,xg,v.y)
+			p(v.name,xg,v.y)
 		end
 	end
 end
