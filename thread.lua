@@ -1,5 +1,5 @@
 channel = love.thread.getChannel("action")
-syncNode = 'http://ceriat.net/krist/'
+syncNode = 'http://krist.ceriat.net/'
 http = require "socket.http"
 repeat
 	address = channel:pop()
@@ -23,7 +23,7 @@ while true do
 			body = nil
 		elseif action == "names" then
 			channel = love.thread.getChannel("names")
-			url = "http://ceriat.net/krist/?listnames=" .. address
+			url = syncNode .. "?listnames=" .. address
 			body,c,l,h = http.request(url)
 			channel:supply(body)
 			body = nil

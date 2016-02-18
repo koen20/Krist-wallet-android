@@ -7,7 +7,6 @@ end
 function button_draw()
 	for i,v in ipairs(button) do
 		if page ~= 0 then
-			--love.graphics.setColor(0,0,0)
 			love.graphics.setFont(large)
 			love.graphics.print(v.text,v.x,v.y)
 		end

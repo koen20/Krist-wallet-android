@@ -1,40 +1,10 @@
 require "login"
 require "menu"
 http = require "socket.http"
-socket = require "socket"
 
 function love.load()
-	--id
-	file = love.filesystem.newFile("id")
-	if not love.filesystem.exists("id") then
-		math.randomseed( os.time() )
-		id = math.random(1,1000000)
-		file:open("w")
-		file:write(id)
-		file:close()
-	end
-	file:open("r")
-	id = file:read()
-	file:close()
-	print(id)
+	syncNode = 'http://krist.ceriat.net/'
 
-	--network
-	address, port = "love2d.koenhabets.tk", 8091
-	udp = socket.udp()
-	udp:settimeout(0.4)
-	udp:setpeername(address, port)
-
-	local dg = string.format("%f", id)
-	local snd = udp:send(dg)
-	data, msg = udp:receive()
-		if data then
-			syncNode = tostring(data)
-			print("Received syncNode: " .. syncNode)
-			
-		else
-			print("Can't connect to server")
-			syncNode = 'http://ceriat.net/krist/'
-		end
 
 	love.keyboard.setTextInput(true)
 	transactions = {}
